@@ -1,0 +1,57 @@
+# phns
+
+A typed & tested package stub with resources for functional programming in Python.
+
+Currently a minimal base functor set allowing recursive mapping of nested values.
+
+## Use
+
+Import the `phnew` factory instance and pass the shorthand for the structure to be built along with its initial value:
+
+```python
+from phns import phnew
+demo = phnew('f', 1)
+```
+
+Alternatively, the specific builder can be used directly:
+
+```python
+from phns.builder import get_functor
+demo = get_functor(1)
+```
+
+Or instantiate `Functor`, `FunctorIter` or `FunctorDict` imported from `phns.functor`.
+
+Map by passing to the `.map` method the function to be applied to the internal value.
+
+If the value is a `list`, `tuple` or `dict`, the second argument to `.map` - the `as_tree` arg - can be set to `True` to apply the function not only to the data structure's top-level values, but also to nested instances.
+
+### Iterables
+
+The builder passes to `FunctorIter` only lists, tuples, sets, frozensets and bytearrays as the testing covers these types. For other iterables, instantiate direct or add the new type to the reference list in 'phns/builder.py'.
+
+### Tests & type checking
+
+Run the file 'test.py' to check types and run tests. Type checking uses the Mypy package, testing the `unittest` package from the standard library.
+
+```shell
+python3 test.py
+```
+
+To run the type checking only:
+
+```shell
+mypy phns/
+```
+
+For testing alone:
+
+```shell
+python3 -m unittest discover test
+```
+
+## Next
+
+- docstrings and examples
+- primary functions, initially `curry`, `compose` and `pipe`
+- classes and builders for pointed and applicative functors, followed by a minimal base monad
