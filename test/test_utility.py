@@ -61,6 +61,11 @@ class TestUtility(unittest.TestCase):
         int_constructor = get_constructor(1)
         self.assertEqual(int_constructor, int)
 
+    def test_get_class_name(self):
+
+        int_class_name = get_class_name(1)
+        self.assertEqual(int_class_name, 'int')
+
 
 if __name__ == '__main__':
     unittest.main()
