@@ -1,4 +1,5 @@
-from typing import TypeVar, Callable, Iterable, Dict, Any
+from typing import TypeVar, Callable, Iterable, List, Dict, Any
+from inspect import getfullargspec
 
 
 # types
@@ -16,6 +17,9 @@ def traverse_iter(handle: H, tree: Iterable[V], const: Any = list) -> Iterable[V
 def traverse_dict(handle: H, tree: Dict[Any, V]) -> Dict[Any, Any]:
     return dict((k, handle(v)) if not isinstance(v, dict)
         else (k, traverse_dict(handle, v)) for k, v in tree.items())
+
+def get_args(fn: Callable) -> List[str]:
+    return getfullargspec(fn).args
 
 
 # tertiary functions

@@ -54,6 +54,11 @@ class TestUtility(unittest.TestCase):
         dict_doubled = traverse_dict(apply['double'], value['dict_nested']['initial'])
         self.assertEqual(dict_doubled, value['dict_nested']['doubled'])
 
+    def test_get_args(self):
+
+        args = get_args(apply['double'])
+        self.assertEqual(args, ['x'])
+
     # tertiary functions
 
     def test_get_constructor(self):
