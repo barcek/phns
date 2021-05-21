@@ -1,7 +1,7 @@
-# phns v 1.1.0
+# phns v 1.1.2
 # ©2021 barcek
 # License: MIT
 # @ github.com
 # /barcek/phns
 
-from .factory import phnew as phnew
+from phns.factory import phnew as phnew

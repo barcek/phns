@@ -51,8 +51,3 @@ def get_class_name(object: Any) -> str:
         'int'
     """
     return str(object.__class__.__name__)
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod(verbose=True)
