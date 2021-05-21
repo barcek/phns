@@ -48,9 +48,9 @@ Passing one or more functions to `compose` or `pipe` returns a single function t
 
 The module 'phns/utility.py' includes `traverse_iter` and `traverse_dict` for trees of a given data structure, plus `get_args` to help determine arity.
 
-## Tests & type checking
+## Tests, interactive examples & type checking
 
-Run the file 'test.py' to check types and run tests. Type checking uses the Mypy package, testing the `unittest` package from the standard library.
+Run the file 'test.py' to check types and run the interactive examples and unit tests. Type checking uses the Mypy package, while the examples are run with `doctest` and the fuller tests with `unittest`, both in the standard library.
 
 ```shell
 python3 test.py
@@ -60,6 +60,12 @@ To run the type checking only:
 
 ```shell
 mypy phns/
+```
+
+Just the interactive examples:
+
+```shell
+python3 -m doctest phns/*.py
 ```
 
 For testing alone:
