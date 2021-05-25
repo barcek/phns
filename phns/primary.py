@@ -7,7 +7,11 @@ from phns.utility import get_args
 # primary functions
 
 def curry(fn: Callable) -> Callable:
-
+    """Returns a function to which the arguments to 'fn' can be passed in part
+       or full, repeatedly if part, delaying invocation until all are received.
+       >>> curry(lambda x, y, z: x + y + z)(1)(2)(3)
+       6
+    """
     arity = len(get_args(fn))
 
     def retain(*old_args, **old_kwargs):
@@ -23,6 +27,11 @@ def curry(fn: Callable) -> Callable:
     return retain()
 
 def compose(*fns: Callable) -> Callable:
+    """Returns a function invoking 'fns' in sequence right to left, the first
+       with the initial arguments, each thereafter with the last return value.
+       >>> compose(lambda x: x + 1, lambda x, y, z: x + y + z)(1, 2, 3)
+       7
+    """
     return lambda *value: reduce(
         lambda acc, fn: fn(acc),
         list(reversed(fns))[1:] if len(fns) > 1 else [],
@@ -30,6 +39,11 @@ def compose(*fns: Callable) -> Callable:
     )
 
 def pipe(*fns: Callable) -> Callable:
+    """Returns a function invoking 'fns' in sequence left to right, the first
+       with the initial arguments, each thereafter with the last return value.
+       >>> pipe(lambda x, y, z: x + y + z, lambda x: x + 1)(1, 2, 3)
+       7
+    """
     return lambda *value: reduce(
         lambda acc, fn: fn(acc),
         fns[1:] if len(fns) > 1 else [],
