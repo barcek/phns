@@ -1,4 +1,5 @@
 import unittest
+from functools import reduce
 
 from phns.primary import *
 
@@ -9,6 +10,7 @@ apply = {
 
     'sum_2': lambda x, y: x + y,
     'sum_3': lambda x, y, z: x + y + z,
+    'sum_n': lambda *xs: reduce(lambda acc, x: acc + x, [*xs], 0),
 
     'incr_1': lambda x: x + 1,
     'double': lambda x: x * 2,
@@ -32,6 +34,21 @@ class TestPrimary(unittest.TestCase):
         self.assertEqual(curried_sum3(1, 2, 3), 6)
         self.assertEqual(curried_sum3(1, 2)(3), 6)
         self.assertEqual(curried_sum3(1)(2)(3), 6)
+
+    def test_curry_n(self):
+
+        curried_sum4 = curry_n(apply['sum_n'], 4)
+        curried_sum5 = curry_n(apply['sum_n'], 5)
+
+        curried_sum5_1 = curried_sum5(1)
+
+        self.assertEqual(curried_sum4(1)(2)(3)(4), 10)
+
+        self.assertEqual(curried_sum5(1, 2, 3, 4, 5), 15)
+        self.assertEqual(curried_sum5(1, 2, 3, 4)(5), 15)
+        self.assertEqual(curried_sum5(1, 2, 3)(4)(5), 15)
+        self.assertEqual(curried_sum5(1, 2)(3)(4)(5), 15)
+        self.assertEqual(curried_sum5(1)(2)(3)(4)(5), 15)
 
     def test_compose(self):
 

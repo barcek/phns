@@ -1,5 +1,5 @@
-from typing import Callable, Any
 from functools import reduce
+from typing import Callable, Any
 
 from phns.utility import get_args
 
@@ -20,6 +20,25 @@ def curry(fn: Callable) -> Callable:
             args = (*old_args, *new_args)
             kwargs = {**old_kwargs, **new_kwargs}
             return fn(*args, **kwargs) if len(args) + len(kwargs) == arity\
+                else retain(*args, **kwargs)
+
+        return collect
+
+    return retain()
+
+def curry_n(fn: Callable, n: int) -> Callable:
+    """Returns a function to which 'n' arguments to 'fn' can be passed in part
+       or full, repeatedly if part, delaying invocation until all are received.
+       >>> sum_n = lambda *xs: reduce(lambda acc, x: acc + x, [*xs], 0)
+       >>> curry_n(sum_n, 4)(1)(2)(3)(4)
+       10
+    """
+    def retain(*old_args, **old_kwargs):
+
+        def collect(*new_args, **new_kwargs):
+            args = (*old_args, *new_args)
+            kwargs = {**old_kwargs, **new_kwargs}
+            return fn(*args, **kwargs) if len(args) + len(kwargs) == n\
                 else retain(*args, **kwargs)
 
         return collect
