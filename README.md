@@ -2,7 +2,7 @@
 
 A typed and tested package stub with resources for functional programming in Python.
 
-Currently implements a minimal base functor set allowing recursive mapping of nested values, as well as the `curry`, `compose` and `pipe` functions.
+Currently implements a minimal base functor set allowing recursive mapping of nested values, as well as the `curry`, `curry_n`, `compose` and `pipe` functions.
 
 ## Use
 
@@ -34,13 +34,13 @@ The builder passes to `FunctorIter` only lists, tuples, sets, frozensets and byt
 
 ### Primary functions
 
-For `curry`, `compose` and `pipe`, import from 'phns/primary.py':
+For `curry`, `curry_n`, `compose` and `pipe`, import from 'phns/primary.py':
 
 ```python
 from phns.primary import *
 ```
 
-Passing an uncurried function to `curry` returns a collector function, allowing the initial function's arguments to be provided singly or in groups. The function is invoked when the last argument is received.
+Passing an uncurried function to `curry` returns a collector function, allowing the initial function's arguments to be provided singly or in groups. The function is invoked when the last argument is received. The variation `curry_n` takes as its second argument an integer specifying the number of arguments to be collected.
 
 Passing one or more functions to `compose` or `pipe` returns a single function to call the whole set in sequence. The process begins when this is called with any arguments to the first in the set, with the return value from each passed to the next, or out from the last. Note that `compose` calls the set from right to left, `pipe` from left to right.
 
