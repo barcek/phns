@@ -1,6 +1,6 @@
 from typing import TypeVar, Callable, Dict, Any
 
-from phns.builder import get_functor
+from phns.builder import get_functor, get_pfunctor
 
 
 # types
@@ -29,3 +29,4 @@ class Phnew():
 
 phnew = Phnew()
 phnew.register('f', get_functor)
+phnew.register('pf', get_pfunctor)

@@ -33,10 +33,12 @@ class TestFactory(unittest.TestCase):
 
         self.assertEqual(phnew.__class__, Phnew)
         self.assertEqual(list(phnew.builders.keys()), [
-            'f'
+            'f',
+            'pf'
         ])
         self.assertEqual(list(phnew.builders.values()), [
-            get_functor
+            get_functor,
+            get_pfunctor
         ])
 
 
