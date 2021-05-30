@@ -2,35 +2,47 @@
 
 A typed and tested package stub with resources for functional programming in Python.
 
-Currently implements a minimal base functor set allowing recursive mapping of nested values, as well as the `curry`, `curry_n`, `compose` and `pipe` functions.
+Currently implements base and pointed functor sets allowing recursive mapping of nested values, as well as the `curry`, `curry_n`, `compose` and `pipe` functions.
 
 ## Use
 
-### Base functors
+### Base & pointed functors
 
-Import the `phnew` factory instance and pass the shorthand for the structure to be built along with its initial value. For a base functor, the shorthand is 'f'.
+Import the `phnew` factory instance and pass the shorthand for the structure to be built along with its initial value. For a base functor, the shorthand is 'f', for a pointed functor 'pf'.
 
 ```python
 from phns import phnew
-demo = phnew('f', 1)
+demo_f = phnew('f', 1)
 ```
 
-Alternatively, the specific builder can be used directly:
+Alternatively, the given builder can be used independently:
 
 ```python
 from phns.builder import get_functor
-demo = get_functor(1)
+demo_f = get_functor(1)
 ```
 
-Or instantiate `Functor`, `FunctorIter` or `FunctorDict` imported from `phns.functor`. If `FunctorIter`, see [below](#functors--iterables).
+A class can also be imported from `phns.functor` and instantiated directly, whether the base `Functor`, `FunctorIter` or `FunctorDict`, or the pointed `PFunctor`, `PFunctorIter` or `PFunctorDict`. For the `-Iter` classes, see [below](#iterable-values).
 
-Map by passing to the `.map` method the function to be applied to the internal value.
+#### Mapping
 
-If the value is a `list`, `tuple` or `dict`, the second argument to `.map` can be set to `True` to apply the function not only to the data structure's top-level values, but also to nested instances.
+Map by passing to the `.map` method the function to be applied to the internal value. The method return value is the result of the mapping. The internal value does not change.
 
-#### Functors & iterables
+```python
+demo_f.map(lambda x: x + 1)
+```
 
-The builder passes to `FunctorIter` only lists, tuples, sets, frozensets and bytearrays as the testing covers these types. For other iterables, instantiate direct, modifying if need be, or add the new type to the reference list in 'phns/builder.py'. Pull requests are welcome.
+If the internal value is a `list`, `tuple` or `dict`, the second argument to `.map` can be set to `True` to apply the function not only to the data structure's top-level values, but also to nested instances.
+
+With a pointed functor, the return value is a new instance of that functor, with the internal value being the result of the mapping. This allows uses of `.map` to be chained.
+
+```python
+PFunctor.of(1).map(lambda x: x + 1).map(lambda x: x * 2)
+```
+
+#### Iterables
+
+The builder passes to `FunctorIter` and `PFunctorIter` only lists, tuples, sets, frozensets and bytearrays as the testing covers these types. For other iterables, instantiate direct, modifying if need be, or add the new type to the reference list in 'phns/builder.py'. Pull requests are welcome.
 
 ### Primary functions
 
@@ -77,4 +89,4 @@ python3 -m unittest discover test
 ## Next
 
 - docstrings and examples
-- classes and builders for pointed and applicative functors, followed by a minimal base monad
+- classes and builder for applicative functors, followed by a minimal base monad
