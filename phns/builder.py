@@ -4,11 +4,16 @@ from phns.functor import Functor, FunctorIter, FunctorDict, PFunctor, PFunctorIt
 from phns.utility import get_constructor
 
 
+# builder values
+
+iterables_passed = [list, tuple, set, frozenset, bytearray]
+
+
 # builder functions
 
 def get_functor(value: Any) -> Union[Functor, FunctorIter, FunctorDict]:
     const = get_constructor(value)
-    if const in [list, tuple, set, frozenset, bytearray]:
+    if const in iterables_passed:
         return FunctorIter(value, const)
     if const == dict:
         return FunctorDict(value)
@@ -16,7 +21,7 @@ def get_functor(value: Any) -> Union[Functor, FunctorIter, FunctorDict]:
 
 def get_pfunctor(value: Any) -> Union[PFunctor, PFunctorIter, PFunctorDict]:
     const = get_constructor(value)
-    if const in [list, tuple, set, frozenset, bytearray]:
+    if const in iterables_passed:
         return PFunctorIter.of(value, const)
     if const == dict:
         return PFunctorDict.of(value)
