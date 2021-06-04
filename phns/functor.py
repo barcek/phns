@@ -80,19 +80,43 @@ class PFunctor(Functor):
 
     @staticmethod
     def of(value: V) -> Any:
+        """Returns a PFunctor instance with a value property set to 'value'.
+           >>> pf = PFunctor.of(1)
+           >>> print(pf.__class__.__name__, pf.value)
+           PFunctor 1
+        """
         return PFunctor(value)
 
     def map(self, handle: H) -> Any:
+        """Returns a new PFunctor instance with a value property being the
+           previous instance value property having had 'handle' applied.
+           >>> pf = PFunctor(1)
+           >>> print(pf.map(lambda x: x + 1).value)
+           2
+        """
         return PFunctor.of(handle(self.value))
 
 class PFunctorIter(FunctorIter):
 
     @staticmethod
     def of(value: Iterable[V], const: Any = None) -> Any:
+        """Returns a PFunctorIter instance with a value property set to 'value'
+           and a const property set to 'const' or the constructor of 'value'.
+           >>> pf = PFunctorIter([1, [2, 3]])
+           >>> print(pf.__class__.__name__, pf.value, pf.const == list)
+           PFunctorIter [1, [2, 3]] True
+        """
         const = get_constructor(value) if const is None else const
         return PFunctorIter(value, const)
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
+        """Returns a new PFunctorIter instance with a value property being the
+           previous instance value property having had 'handle' applied
+           to the whole by default or to each node if 'as_tree' is True.
+           >>> pf = PFunctorIter([1, [2, 3]])
+           >>> print(pf.map(lambda x: x + 1, True).value)
+           [2, [3, 4]]
+        """
         if as_tree:
             traversed = traverse_iter(handle, self.value, self.const)
             return PFunctorIter(traversed)
@@ -103,9 +127,21 @@ class PFunctorDict(FunctorDict):
 
     @staticmethod
     def of(value: Dict[Any, V]) -> Any:
+        """Returns a PFunctorDict instance with a value property set to 'value'.
+           >>> pf = PFunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
+           >>> print(pf.__class__.__name__, pf.value)
+           PFunctorDict {'a': 1, 'b': {'c': 2, 'd': 3}}
+        """
         return PFunctorDict(value)
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
+        """Returns a new PFunctorDict instance with a value property being the
+           previous instance value property having had 'handle' applied
+           to the whole by default or to each node if 'as_tree' is True.
+           >>> pf = PFunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
+           >>> print(pf.map(lambda x: x + 1, True).value)
+           {'a': 2, 'b': {'c': 3, 'd': 4}}
+        """
         if as_tree:
             traversed = traverse_dict(handle, self.value)
             return PFunctorDict(traversed)
