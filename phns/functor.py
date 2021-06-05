@@ -12,6 +12,14 @@ H = Callable[[V], V]
 # base functor classes
 
 class Functor(Generic[V]):
+    """Stores a value of any type to be mapped by use of a handler function.
+
+      value (attribute) V
+      - A value of any type provided for transformation via the map method.
+
+      map (method) handle: H -> Any
+      - Returns the instance value property once 'handle' has been applied.
+    """
 
     def __init__(self, value: V) -> None:
         """Returns a Functor instance with a value property set to 'value'.
@@ -22,7 +30,7 @@ class Functor(Generic[V]):
         self.value = value
 
     def map(self, handle: H) -> Any:
-        """Returns the instance value property having had 'handle' applied.
+        """Returns the instance value property once 'handle' has been applied.
            >>> f = Functor(1)
            >>> print(f.map(lambda x: x + 1))
            2
@@ -30,6 +38,18 @@ class Functor(Generic[V]):
         return handle(self.value)
 
 class FunctorIter(Generic[V]):
+    """Stores an iterable value to be mapped by use of a handler function.
+
+      value (attribute) Iterable[V]
+      - An iterable value provided for transformation via the map method.
+
+      const (attribute) Any = None
+      - The constructor function corresponding to the value attribute type.
+
+      map (method) handle: H, as_tree: bool = False -> Any
+      - Returns the instance value property once 'handle' has been applied
+        to the whole by default or to each node if 'as_tree' is True.
+    """
 
     def __init__(self, value: Iterable[V], const: Any = None) -> None:
         """Returns a FunctorIter instance with a value property set to 'value'
@@ -42,7 +62,7 @@ class FunctorIter(Generic[V]):
         self.const = get_constructor(value) if const is None else const
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
-        """Returns the instance value property having had 'handle' applied
+        """Returns the instance value property once 'handle' has been applied
            to the whole by default or to each node if 'as_tree' is True.
            >>> f = FunctorIter([1, [2, 3]])
            >>> print(f.map(lambda x: x + 1, True))
@@ -53,6 +73,15 @@ class FunctorIter(Generic[V]):
         return self.const(map(handle, self.value))
 
 class FunctorDict(Generic[V]):
+    """Stores a value of type dict to be mapped by use of a handler function.
+
+      value (attribute) Dict[Any, V]
+      - A value of type dict provided for transformation via the map method.
+
+      map (method) handle: H, as_tree: bool = False -> Any
+      - Returns the instance value property once 'handle' has been applied
+        to the whole by default or to each node if 'as_tree' is True.
+    """
 
     def __init__(self, value: Dict[Any, V]) -> None:
         """Returns a FunctorDict instance with a value property set to 'value'.
@@ -63,7 +92,7 @@ class FunctorDict(Generic[V]):
         self.value = value
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
-        """Returns the instance value property having had 'handle' applied
+        """Returns the instance value property once 'handle' has been applied
            to the whole by default or to each node if 'as_tree' is True.
            >>> f = FunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
            >>> print(f.map(lambda x: x + 1, True))
@@ -77,6 +106,19 @@ class FunctorDict(Generic[V]):
 # pointed functor classes
 
 class PFunctor(Functor):
+    """Stores a value of any type to be mapped by use of a handler function
+       and returned in a new instance, allowing method calls to be chained.
+
+      value (attribute) V
+      - A value of any type provided for transformation via the map method.
+
+      of (static method) value: V -> Any
+      - Returns a PFunctor instance with a value property set to 'value'.
+
+      map (method) handle: H -> Any
+      - Returns a new PFunctor instance with a value property being the
+        previous instance value property once 'handle' has been applied.
+    """
 
     @staticmethod
     def of(value: V) -> Any:
@@ -89,7 +131,7 @@ class PFunctor(Functor):
 
     def map(self, handle: H) -> Any:
         """Returns a new PFunctor instance with a value property being the
-           previous instance value property having had 'handle' applied.
+           previous instance value property once 'handle' has been applied.
            >>> pf = PFunctor(1)
            >>> print(pf.map(lambda x: x + 1).value)
            2
@@ -97,6 +139,24 @@ class PFunctor(Functor):
         return PFunctor.of(handle(self.value))
 
 class PFunctorIter(FunctorIter):
+    """Stores an iterable value to be mapped by use of a handler function
+       and returned in a new instance, allowing method calls to be chained.
+
+      value (attribute) Iterable[V]
+      - An iterable value provided for transformation via the map method.
+
+      const (attribute) Any = None
+      - The constructor function corresponding to the value attribute type.
+
+      of (static method) value: Iterable[V], const: Any = None -> Any
+      - Returns a PFunctorIter instance with a value property set to 'value'
+        and a const property set to 'const' or the constructor of 'value'.
+
+      map (method) handle: H, as_tree: bool = False -> Any
+      - Returns a new PFunctorIter instance with a value property being the
+        previous instance value property once 'handle' has been applied
+        to the whole by default or to each node if 'as_tree' is True.
+    """
 
     @staticmethod
     def of(value: Iterable[V], const: Any = None) -> Any:
@@ -111,7 +171,7 @@ class PFunctorIter(FunctorIter):
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """Returns a new PFunctorIter instance with a value property being the
-           previous instance value property having had 'handle' applied
+           previous instance value property once 'handle' has been applied
            to the whole by default or to each node if 'as_tree' is True.
            >>> pf = PFunctorIter([1, [2, 3]])
            >>> print(pf.map(lambda x: x + 1, True).value)
@@ -124,6 +184,20 @@ class PFunctorIter(FunctorIter):
         return PFunctorIter.of(mapped)
 
 class PFunctorDict(FunctorDict):
+    """Stores a value of type dict to be mapped by use of a handler function
+       and returned in a new instance, allowing method calls to be chained.
+
+      value (attribute) Dict[Any, V]
+      - A value of type dict provided for transformation via the map method.
+
+      of (static method) value: Dict[Any, V] -> Any
+      - Returns a PFunctorDict instance with a value property set to 'value'.
+
+      map (method) handle: H, as_tree: bool = False -> Any
+      - Returns a new PFunctorDict instance with a value property being the
+        previous instance value property once 'handle' has been applied
+        to the whole by default or to each node if 'as_tree' is True.
+    """
 
     @staticmethod
     def of(value: Dict[Any, V]) -> Any:
@@ -136,7 +210,7 @@ class PFunctorDict(FunctorDict):
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """Returns a new PFunctorDict instance with a value property being the
-           previous instance value property having had 'handle' applied
+           previous instance value property once 'handle' has been applied
            to the whole by default or to each node if 'as_tree' is True.
            >>> pf = PFunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
            >>> print(pf.map(lambda x: x + 1, True).value)
