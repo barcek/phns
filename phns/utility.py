@@ -60,4 +60,4 @@ def get_class_name(object: Any) -> str:
     >>> get_class_name(1)
     'int'
     """
-    return str(object.__class__.__name__)
+    return str(get_constructor(object).__name__)
