@@ -1,7 +1,7 @@
 """
-Classes for functors, available via 'phns/builder.py' and 'phns/factory.py':
-- base functors (Functor, FunctorIter, FunctorDict)
-- pointed functors (PFunctor, PFunctorIter, PFunctorDict).
+Functor classes, available also via 'phns/builder.py' and 'phns/factory.py':
+- base functor classes (Functor, FunctorIter, FunctorDict)
+- pointed functor classes (PFunctor, PFunctorIter, PFunctorDict).
 """
 
 
