@@ -1,3 +1,10 @@
+"""
+Higher order functions ('secondary') and first order functions ('tertiary').
+- secondary  traverse_iter, traverse_dict, get_args
+- tertiary   get_constructor, get_class_name
+"""
+
+
 from typing import TypeVar, Callable, Iterable, List, Dict, Any
 from inspect import getfullargspec
 

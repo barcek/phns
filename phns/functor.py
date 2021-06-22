@@ -1,3 +1,10 @@
+"""
+Classes for functors, available via 'phns/builder.py' and 'phns/factory.py':
+- base functors (Functor, FunctorIter, FunctorDict)
+- pointed functors (PFunctor, PFunctorIter, PFunctorDict).
+"""
+
+
 from typing import TypeVar, Callable, Generic, Iterable, List, Dict, Any
 
 from phns.utility import traverse_iter, traverse_dict, get_constructor

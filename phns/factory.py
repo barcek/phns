@@ -1,3 +1,10 @@
+"""
+A factory class - Phnew - instantiated to register and call builder functions
+and one instance - phnew - with the builders in 'phns/builder.py' registered,
+returning when called directly instances of the classes in 'phns/functor.py'.
+"""
+
+
 from typing import TypeVar, Callable, Dict, Any
 
 from phns.builder import get_functor, get_pfunctor

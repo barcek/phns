@@ -1,3 +1,10 @@
+"""
+Builder functions returning instances of the classes in 'phns/functor.py':
+- get_functor   base functor classes (Functor, FunctorIter, FunctorDict)
+- get_pfunctor  pointed functor classes (PFunctor, PFunctorIter, PFunctorDict)
+"""
+
+
 from typing import TypeVar, Union, Any
 
 from phns.functor import Functor, FunctorIter, FunctorDict, PFunctor, PFunctorIter, PFunctorDict

@@ -1,3 +1,10 @@
+"""
+Higher order functions both receiving one or more functions and returning one:
+- for currying     curry, curry_n
+- for composition  compose, pipe
+"""
+
+
 from functools import reduce
 from typing import Callable, Any
 
