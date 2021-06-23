@@ -88,6 +88,5 @@ python3 -m unittest discover test
 
 ## Next
 
-- module and package docstrings
 - classes and builder for applicative functors, followed by a minimal base monad
 - reducers and transducers
