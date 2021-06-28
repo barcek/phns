@@ -13,15 +13,18 @@ from phns.utility import get_args
 
 # primary functions
 
-def curry(fn: Callable) -> Callable:
+def curry_n(fn: Callable, n: int) -> Callable:
     """
-    Returns a function to which the arguments to 'fn' can be passed in part
+    Returns a function to which 'n' arguments to 'fn' can be passed in part
     or full, repeatedly if part, delaying invocation until all are received.
 
-    >>> curry(lambda x, y, z: x + y + z)(1)(2)(3)
-    6
+    Used where 'fn' is of variable arity. For fixed arity, see also 'curry'.
+
+    >>> sum_n = lambda *xs: reduce(lambda acc, x: acc + x, [*xs], 0)
+    >>> curry_n(sum_n, 2)(1)(2)
+    3
     """
-    arity = len(get_args(fn))
+    arity = n
 
     def retain(*old_args, **old_kwargs):
 
@@ -35,26 +38,18 @@ def curry(fn: Callable) -> Callable:
 
     return retain()
 
-def curry_n(fn: Callable, n: int) -> Callable:
+def curry(fn: Callable) -> Callable:
     """
-    Returns a function to which 'n' arguments to 'fn' can be passed in part
+    Returns a function to which the arguments to 'fn' can be passed in part
     or full, repeatedly if part, delaying invocation until all are received.
 
-    >>> sum_n = lambda *xs: reduce(lambda acc, x: acc + x, [*xs], 0)
-    >>> curry_n(sum_n, 4)(1)(2)(3)(4)
-    10
+    Used where 'fn' is of fixed arity. Implements 'curry_n' for this number.
+
+    >>> curry(lambda x, y: x + y)(1)(2)
+    3
     """
-    def retain(*old_args, **old_kwargs):
-
-        def collect(*new_args, **new_kwargs):
-            args = (*old_args, *new_args)
-            kwargs = {**old_kwargs, **new_kwargs}
-            return fn(*args, **kwargs) if len(args) + len(kwargs) == n\
-                else retain(*args, **kwargs)
-
-        return collect
-
-    return retain()
+    n = len(get_args(fn))
+    return curry_n(fn, n)
 
 def compose(*fns: Callable) -> Callable:
     """
