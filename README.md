@@ -12,6 +12,7 @@ Currently implements base and pointed functor sets allowing recursive mapping of
     - [Utility functions](#utility-functions)
 - [Tests, interactive examples & type checking](#tests-interactive-examples--type-checking)
 - [Next](#next)
+- [Repository tree](#repository-tree)
 
 ## Using the resources
 
@@ -99,3 +100,28 @@ python3 -m unittest discover test
 
 - classes and builder for applicative functors, followed by a minimal base monad
 - reducers and transducers
+
+## Repository tree
+
+```
+./
+├── phns
+│   ├── __init__.py
+│   ├── builder.py
+│   ├── factory.py
+│   ├── functor.py
+│   ├── primary.py
+│   └── utility.py
+├── test
+│   ├── __init__.py
+│   ├── test_builder.py
+│   ├── test_factory.py
+│   ├── test_functor.py
+│   ├── test_primary.py
+│   └── test_utility.py
+├── .gitignore
+├── LICENSE.txt
+├── README.md
+├── requirements.txt
+└── test.py
+```
