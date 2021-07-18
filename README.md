@@ -4,6 +4,15 @@ A typed and tested package stub with resources for functional programming in Pyt
 
 Currently implements base and pointed functor sets allowing recursive mapping of nested values, as well as the `curry`, `curry_n`, `compose` and `pipe` functions.
 
+- [Using the resources](#using-the-resources)
+    - [Base & pointed functors](#base--pointed-functors)
+        - [Mapping](#mapping)
+        - [Iterables](#iterables)
+    - [Primary functions](#primary-functions)
+    - [Utility functions](#utility-functions)
+- [Tests, interactive examples & type checking](#tests-interactive-examples--type-checking)
+- [Next](#next)
+
 ## Using the resources
 
 ### Base & pointed functors
