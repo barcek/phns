@@ -11,7 +11,7 @@ Currently implements base and pointed functor sets allowing recursive mapping of
     - [Primary functions](#primary-functions)
     - [Utility functions](#utility-functions)
 - [Tests, interactive examples & type checking](#tests-interactive-examples--type-checking)
-- [Next](#next)
+- [Development plan](#development-plan)
 - [Repository tree](#repository-tree)
 
 ## Using the resources
@@ -96,7 +96,9 @@ For testing alone:
 python3 -m unittest discover test
 ```
 
-## Next
+## Development plan
+
+The following are the expected next steps in the development of the code base. Pull requests are welcome for these and other potential improvements.
 
 - classes and builder for applicative functors, followed by a minimal base monad
 - reducers and transducers
