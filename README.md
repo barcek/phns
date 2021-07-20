@@ -9,7 +9,7 @@ Currently implements base and pointed functor sets allowing recursive mapping of
         - [Mapping](#mapping)
         - [Iterables](#iterables)
     - [Primary functions](#primary-functions)
-        - [curry & curry_n](#curry--curryn)
+        - [curry & curry_n](#curry--curry_n)
         - [compose & pipe](#compose--pipe)
     - [Utility functions](#utility-functions)
 - [Tests, interactive examples & type checking](#tests-interactive-examples--type-checking)
