@@ -9,6 +9,8 @@ Currently implements base and pointed functor sets allowing recursive mapping of
         - [Mapping](#mapping)
         - [Iterables](#iterables)
     - [Primary functions](#primary-functions)
+        - [curry & curry_n](#curry--curryn)
+        - [compose & pipe](#compose--pipe)
     - [Utility functions](#utility-functions)
 - [Tests, interactive examples & type checking](#tests-interactive-examples--type-checking)
 - [Development plan](#development-plan)
@@ -62,7 +64,11 @@ For `curry`, `curry_n`, `compose` and `pipe`, import from 'phns/primary.py':
 from phns.primary import *
 ```
 
+#### curry & curry_n
+
 Passing an uncurried function to `curry` returns a collector function, allowing the initial function's arguments to be provided singly or in groups. The function is invoked when the last argument is received. The variation `curry_n` takes as its second argument an integer specifying the number of arguments to be collected.
+
+#### compose & pipe
 
 Passing one or more functions to `compose` or `pipe` returns a single function to call the whole set in sequence. The process begins when this is called with any arguments to the first in the set, with the return value from each passed to the next, or out from the last. Note that `compose` calls the set from right to left, `pipe` from left to right.
 
