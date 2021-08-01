@@ -104,7 +104,7 @@ python3 -m unittest discover test
 
 ## Development plan
 
-The following are the expected next steps in the development of the code base. Pull requests are welcome for these and other potential improvements.
+The following are the expected next steps in the development of the code base. The general medium-term aim is a comprehensive set of the core patterns applied in functional programming. Pull requests are welcome for these and other potential improvements.
 
 - classes and builder for applicative functors, followed by a minimal base monad
 - reducers and transducers
