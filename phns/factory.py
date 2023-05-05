@@ -32,7 +32,7 @@ class Phnew():
       Returns the result from the builder under 'id' when passed 'value'.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Returns an instance of Phnew with no builder functions registered.
 
