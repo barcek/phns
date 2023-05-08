@@ -78,14 +78,18 @@ The module 'phns/utility.py' includes `traverse_iter` and `traverse_dict` for tr
 
 ## Tests, interactive examples & type checking
 
-The two verification files can be used to check types and run the interactive examples and unit tests. Type checking uses the Mypy package, while the examples are run with `doctest` and the fuller tests with `unittest`, both in the standard library.
+The two verification scripts - 'verify.py' and 'verify.sh' - can be used to check types and run the interactive examples and unit tests.
+
+Type checking uses Mypy, an external tool, while the examples are run with `doctest` and the fuller tests with `unittest`, both in the standard library. The Mypy-related dependencies per Python 3.11 are listed in the file 'requirements.txt'.
+
+The verification scripts can be run as follows:
 
 ```shell
 python3 verify.py
 sh verify.sh
 ```
 
-Either of the two can be run with the command `./<filename>` while in the same directory, and from elsewhere using the pattern `path/to/<filename>`, by first making the file executable, if not already, with `chmod +x <filename>`. Both the Python and shell binary are assumed to be accessible via the '/usr/bin' directory, per the hashbang at the top of each file.
+Either of the two can also be run with the command `./<filename>` while in the same directory, and from elsewhere using the pattern `path/to/<filename>`, by first making the file executable, if not already, with `chmod +x <filename>`. Both the Python and shell binary are assumed to be accessible via the '/usr/bin' directory, per the hashbang at the top of each file.
 
 ```shell
 ./verify.py
