@@ -12,15 +12,24 @@ Currently implements base and pointed functor sets allowing recursive mapping of
         - [curry & curry_n](#curry--curry_n)
         - [compose & pipe](#compose--pipe)
     - [Utility functions](#utility-functions)
-- [Tests, interactive examples & type checking](#tests-interactive-examples--type-checking)
+- [Code verification](#code-verification)
+  - [Type checking](#type-checking)
+  - [Interactive examples](#interactive-examples)
+  - [Unit tests](#unit-tests)
 - [Development plan](#development-plan)
 - [Repository tree](#repository-tree)
 
 ## Using the resources
 
+Base and pointed functors can be used via the top-level `phnew` factory instance, as well as via the builders in 'phns/builder.py' and direct from 'phns/functor.py'.
+
+The primary functions `curry`, `curry_n`, `compose` and `pipe` can be imported directly from 'phns/primary.py'.
+
+Utility functions can be imported from 'phns/utility.py'.
+
 ### Base & pointed functors
 
-Import the `phnew` factory instance and pass the shorthand for the structure to be built along with its initial value. For a base functor, the shorthand is 'f', for a pointed functor 'pf'.
+Import the `phnew` factory instance and pass the shorthand for the structure to be built along with its initial internal value. For a base functor, the shorthand is 'f', for a pointed functor 'pf'.
 
 ```python
 from phns import phnew
@@ -38,7 +47,9 @@ A class can also be imported from `phns.functor` and instantiated directly, whet
 
 #### Mapping
 
-Map by passing to the `.map` method the function to be applied to the internal value. The method return value is the result of the mapping. The internal value does not change.
+Each functor has a `.map` method for operations using its internal value. Map by passing to this method the function to be applied.
+
+With a non-pointed functor, the return value of the method is the result of the mapping. The internal value does not change.
 
 ```python
 demo_f.map(lambda x: x + 1)
@@ -46,7 +57,7 @@ demo_f.map(lambda x: x + 1)
 
 If the internal value is a `list`, `tuple` or `dict`, the second argument to `.map` can be set to `True` to apply the function not only to the data structure's top-level values, but also to nested instances.
 
-With a pointed functor, the return value is a new instance of that functor, with the internal value being the result of the mapping. This allows uses of `.map` to be chained.
+With a pointed functor, the return value is a new instance of that functor, with its internal value being the result of the mapping. This allows uses of `.map` to be chained.
 
 ```python
 PFunctor.of(1).map(lambda x: x + 1).map(lambda x: x * 2)
@@ -76,11 +87,9 @@ Passing one or more functions to `compose` or `pipe` returns a single function t
 
 The module 'phns/utility.py' includes `traverse_iter` and `traverse_dict` for trees of a given data structure, plus `get_args` to help determine arity.
 
-## Tests, interactive examples & type checking
+## Code verification
 
 The two verification scripts - 'verify.py' and 'verify.sh' - can be used to check types and run the interactive examples and unit tests.
-
-Type checking uses Mypy, an external tool, while the examples are run with `doctest` and the fuller tests with `unittest`, both in the standard library. The Mypy-related dependencies per Python 3.11 are listed in the file 'requirements.txt'.
 
 The verification scripts can be run as follows:
 
@@ -96,19 +105,33 @@ Either of the two can also be run with the command `./<filename>` while in the s
 ./verify.sh
 ```
 
-Each of the three tasks can instead be run individually using the specific command in 'verify.sh'. To run the type checking only:
+Each of the three - type checking, interactive examples and unit tests - can instead be run individually using the specific command in 'verify.sh'.
+
+### Type checking
+
+Type checking uses Mypy, an external tool. The Mypy-related dependencies per Python 3.11 are listed in the file 'requirements.txt'.
+
+To run the type checking only:
 
 ```shell
 mypy phns/
 ```
 
-Just the interactive examples:
+### Interactive examples
+
+The interactive examples use `doctest` in the standard library.
+
+To run the interactive examples only:
 
 ```shell
 python3 -m doctest phns/*.py
 ```
 
-For testing alone:
+### Unit tests
+
+The unit tests use `unittest`, also in the standard library.
+
+To run the unit tests only:
 
 ```shell
 python3 -m unittest --quiet test/*.py
