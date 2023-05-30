@@ -18,7 +18,7 @@ iterables_passed = [list, tuple, set, frozenset, bytearray]
 
 # builder functions
 
-def get_functor(value: Any) -> Union[Functor, FunctorIter, FunctorDict]:
+def get_functor(value: Any, **kwargs) -> Union[Functor, FunctorIter, FunctorDict]:
     """
     Returns a base functor instance with a value property set to 'value'
     of the class for either dictionary, other iterable or uniterable type,
@@ -29,13 +29,14 @@ def get_functor(value: Any) -> Union[Functor, FunctorIter, FunctorDict]:
     FunctorIter [1, 2, 3] True
     """
     const = get_constructor(value)
-    if const in iterables_passed:
+    as_is = False if 'as_is' not in kwargs else kwargs['as_is']
+    if not as_is and const in iterables_passed:
         return FunctorIter(value, const)
-    if const == dict:
+    if not as_is and const == dict:
         return FunctorDict(value)
     return Functor(value)
 
-def get_pfunctor(value: Any) -> Union[PFunctor, PFunctorIter, PFunctorDict]:
+def get_pfunctor(value: Any, **kwargs) -> Union[PFunctor, PFunctorIter, PFunctorDict]:
     """
     Returns a pointed functor instance with a value property set to 'value'
     of the class for either dictionary, other iterable or uniterable type,
@@ -46,8 +47,9 @@ def get_pfunctor(value: Any) -> Union[PFunctor, PFunctorIter, PFunctorDict]:
     PFunctorIter [1, 2, 3] True
     """
     const = get_constructor(value)
-    if const in iterables_passed:
+    as_is = False if 'as_is' not in kwargs else kwargs['as_is']
+    if not as_is and const in iterables_passed:
         return PFunctorIter.of(value, const)
-    if const == dict:
+    if not as_is and const == dict:
         return PFunctorDict.of(value)
     return PFunctor.of(value)

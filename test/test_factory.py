@@ -22,7 +22,7 @@ class TestFactory(unittest.TestCase):
         # .register method
 
         instance.register('test_builder', get_test_build)
-        self.assertEqual(instance.builders, {'test_builder': get_test_build})
+        self.assertEqual(instance.builders, {'test_builder': {'fn': get_test_build, 'kw': {}}})
 
         # __call__ built-in method
 
@@ -33,12 +33,20 @@ class TestFactory(unittest.TestCase):
 
         self.assertEqual(phnew.__class__, Phnew)
         self.assertEqual(list(phnew.builders.keys()), [
+            'f.',
+            'f:',
             'f',
+            'pf.',
+            'pf:',
             'pf'
         ])
         self.assertEqual(list(phnew.builders.values()), [
-            get_functor,
-            get_pfunctor
+            {'fn': get_functor,  'kw': {'as_is': True}},
+            {'fn': get_functor,  'kw': {}},
+            {'fn': get_functor,  'kw': {}},
+            {'fn': get_pfunctor, 'kw': {'as_is': True}},
+            {'fn': get_pfunctor, 'kw': {}},
+            {'fn': get_pfunctor, 'kw': {}}
         ])
 
 

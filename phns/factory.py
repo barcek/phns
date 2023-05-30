@@ -26,7 +26,8 @@ class Phnew():
       Stores each builder registered to the instance keyed under its id.
 
     register (method) id: str, fn: Builder -> None
-      Inserts builder 'fn' into the builders dictionary keyed under 'id'.
+      Inserts builder 'fn' and its corresponding keyword dictionary 'kw'
+      into the builders dictionary keyed under 'id'.
 
     __call__ (method) id: str, value: P -> Any
       Returns the result from the builder under 'id' when passed 'value'.
@@ -42,16 +43,16 @@ class Phnew():
         """
         self.builders: Dict[str, Any] = {}
 
-    def register(self, id: str, fn: Builder) -> None:
+    def register(self, id: str, fn: Builder, kw: Dict = {}) -> None:
         """
         Inserts builder 'fn' into the builders dictionary keyed under 'id'.
 
         >>> p = Phnew()
         >>> p.register('get_int', lambda x: int(x))
-        >>> p.builders['get_int'](1)
+        >>> p.builders['get_int']['fn'](1)
         1
         """
-        self.builders[id] = fn;
+        self.builders[id] = {'fn': fn, 'kw': kw};
 
     def __call__(self, id: str, value: P) -> Any:
         """
@@ -63,12 +64,20 @@ class Phnew():
         1
         """
         if id in self.builders:
-            return self.builders[id](value)
+            return self.builders[id]['fn'](value, **self.builders[id]['kw'])
         raise ValueError(id)
 
 
 # factory instantiation & builder registration
 
 phnew = Phnew()
-phnew.register('f', get_functor)
-phnew.register('pf', get_pfunctor)
+
+# - functors
+phnew.register('f.', get_functor, {'as_is': True})
+phnew.register('f:', get_functor)
+phnew.register('f',  get_functor)
+
+# - pointed functors
+phnew.register('pf.', get_pfunctor, {'as_is': True})
+phnew.register('pf:', get_pfunctor)
+phnew.register('pf',  get_pfunctor)
