@@ -7,7 +7,9 @@ Currently implements base and pointed functor sets allowing recursive mapping of
 - [Using the resources](#using-the-resources)
     - [Base & pointed functors](#base--pointed-functors)
         - [Mapping](#mapping)
-        - [Iterables](#iterables)
+        - [Containers](#containers)
+          - [Nested mapping](#nested-mapping)
+          - [Other iterables](#other-iterables)
     - [Primary functions](#primary-functions)
         - [curry & curry_n](#curry--curry_n)
         - [compose & pipe](#compose--pipe)
@@ -43,7 +45,9 @@ from phns.builder import get_functor
 demo_f = get_functor(1)
 ```
 
-A class can also be imported from `phns.functor` and instantiated directly, whether the base `Functor`, `FunctorIter` or `FunctorDict`, or the pointed `PFunctor`, `PFunctorIter` or `PFunctorDict`. For the `-Iter` classes, see [below](#iterable-values).
+A class can also be imported from `phns.functor` and instantiated directly, whether the base `Functor`, `FunctorIter` or `FunctorDict`, or the pointed `PFunctor`, `PFunctorIter` or `PFunctorDict`.
+
+Note that by default a list, tuple, set, frozenset or bytearray passed to the `phnew` factory instance or to a builder is added to an instance of the `-Iter` class, and a dictionary to an instance of the `-Dict` class. For more on these classes and overriding this behaviour, see [Containers](#containers) below.
 
 #### Mapping
 
@@ -55,17 +59,39 @@ With a non-pointed functor, the return value of the method is the result of the 
 demo_f.map(lambda x: x + 1)
 ```
 
-If the internal value is a `list`, `tuple` or `dict`, the second argument to `.map` can be set to `True` to apply the function not only to the data structure's top-level values, but also to nested instances.
-
 With a pointed functor, the return value is a new instance of that functor, with its internal value being the result of the mapping. This allows uses of `.map` to be chained.
 
 ```python
 PFunctor.of(1).map(lambda x: x + 1).map(lambda x: x * 2)
 ```
 
-#### Iterables
+#### Containers
 
-The builder passes to `FunctorIter` and `PFunctorIter` only lists, tuples, sets, frozensets and bytearrays as the testing covers these types. For other iterables, instantiate direct, modifying if need be, or add the new type to the reference list in 'phns/builder.py'. Pull requests are welcome.
+By default a list, tuple, set, frozenset or bytearray passed to the `phnew` factory instance or a builder is added to an instance of the `-Iter` class, and a dictionary to an instance of the `-Dict` class. This means that each item in the data structure is mapped.
+
+In order to avoid this and map the data structure as a whole, the `phnew` shorthand 'f.' or 'pf.' can be used:
+
+```python
+from phns import phnew
+demo_f = phnew('f.', 1)
+```
+
+Alternatively, the given builder can have its `as_is` keyword argument set to `True`:
+
+```python
+from phns.builder import get_functor
+demo_f = get_functor(1, as_is=True)
+```
+
+The corresponding `phnew` shorthands 'f:' and 'pf:' are equivalent to 'f' and 'pf', providing the default behaviour.
+
+##### Nested mapping
+
+If the internal value of an `-Iter` instance is a `list` or `tuple`, or in the case of a `-Dict` instance, the second argument to `.map` can be set to `True` to apply the function not only to the data structure's top-level values, but also to nested instances of the structure.
+
+##### Other iterables
+
+Note that the builders pass to the `-Iter` classes only lists, tuples, sets, frozensets and bytearrays as the testing covers these types. For other iterables, instantiate direct, modifying if need be, or add the new type to the reference list in 'phns/builder.py'. Pull requests are welcome.
 
 ### Primary functions
 
