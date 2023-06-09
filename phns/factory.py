@@ -73,11 +73,15 @@ class Phnew():
 phnew = Phnew()
 
 # - functors
-phnew.register('f.', get_functor, {'as_is': True})
-phnew.register('f:', get_functor)
-phnew.register('f',  get_functor)
+phnew.register('f.',  get_functor, {'as_is': True})
+phnew.register('f:',  get_functor)
+phnew.register('f:{', get_functor, {'as_tree': True})
+phnew.register('f',   get_functor)
+phnew.register('f{',  get_functor, {'as_tree': True})
 
 # - pointed functors
-phnew.register('pf.', get_pfunctor, {'as_is': True})
-phnew.register('pf:', get_pfunctor)
-phnew.register('pf',  get_pfunctor)
+phnew.register('pf.',  get_pfunctor, {'as_is': True})
+phnew.register('pf:',  get_pfunctor)
+phnew.register('pf:{', get_pfunctor, {'as_tree': True})
+phnew.register('pf',   get_pfunctor)
+phnew.register('pf{',  get_pfunctor, {'as_tree': True})

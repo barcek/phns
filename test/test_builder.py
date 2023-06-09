@@ -38,6 +38,12 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(list_built.__class__, list_instantiated.__class__)
         self.assertEqual(list_instantiated.value, value['iter_list']['initial'])
 
+        list_built = get_functor(value['iter_list']['initial'], as_tree=True)
+        list_instantiated = FunctorIter(value['iter_list']['initial'])
+        self.assertEqual(list_built.__class__, list_instantiated.__class__)
+        self.assertEqual(list_built.value, value['iter_list']['initial'])
+        self.assertEqual(list_built.pairs['as_tree'], True)
+
         tuple_built = get_functor(value['iter_tuple']['initial'])
         tuple_instantiated = FunctorIter(value['iter_tuple']['initial'])
         self.assertEqual(tuple_built.__class__, tuple_instantiated.__class__)
@@ -65,6 +71,12 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(dict_built.__class__, dict_instantiated.__class__)
         self.assertEqual(dict_instantiated.value, value['dict_dict']['initial'])
 
+        dict_built = get_functor(value['dict_dict']['initial'], as_tree=True)
+        dict_instantiated = FunctorDict(value['dict_dict']['initial'])
+        self.assertEqual(dict_built.__class__, dict_instantiated.__class__)
+        self.assertEqual(dict_built.value, value['dict_dict']['initial'])
+        self.assertEqual(dict_built.pairs['as_tree'], True)
+
     def test_get_pfunctor(self):
 
         # PFunctor
@@ -90,6 +102,12 @@ class TestBuilder(unittest.TestCase):
         list_lifted = PFunctorIter.of(value['iter_list']['initial'])
         self.assertEqual(list_built.__class__, list_lifted.__class__)
         self.assertEqual(list_lifted.value, value['iter_list']['initial'])
+
+        list_built = get_pfunctor(value['iter_list']['initial'], as_tree=True)
+        list_lifted = PFunctorIter.of(value['iter_list']['initial'])
+        self.assertEqual(list_built.__class__, list_lifted.__class__)
+        self.assertEqual(list_built.value, value['iter_list']['initial'])
+        self.assertEqual(list_built.pairs['as_tree'], True)
 
         tuple_built = get_pfunctor(value['iter_tuple']['initial'])
         tuple_lifted = PFunctorIter.of(value['iter_tuple']['initial'])
@@ -117,6 +135,12 @@ class TestBuilder(unittest.TestCase):
         dict_lifted = PFunctorDict.of(value['dict_dict']['initial'])
         self.assertEqual(dict_built.__class__, dict_lifted.__class__)
         self.assertEqual(dict_lifted.value, value['dict_dict']['initial'])
+
+        dict_built = get_pfunctor(value['dict_dict']['initial'], as_tree=True)
+        dict_lifted = PFunctorDict.of(value['dict_dict']['initial'])
+        self.assertEqual(dict_built.__class__, dict_lifted.__class__)
+        self.assertEqual(dict_built.value, value['dict_dict']['initial'])
+        self.assertEqual(dict_built.pairs['as_tree'], True)
 
 
 if __name__ == '__main__':

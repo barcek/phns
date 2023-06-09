@@ -35,18 +35,26 @@ class TestFactory(unittest.TestCase):
         self.assertEqual(list(phnew.builders.keys()), [
             'f.',
             'f:',
+            'f:{',
             'f',
+            'f{',
             'pf.',
             'pf:',
-            'pf'
+            'pf:{',
+            'pf',
+            'pf{'
         ])
         self.assertEqual(list(phnew.builders.values()), [
             {'fn': get_functor,  'kw': {'as_is': True}},
             {'fn': get_functor,  'kw': {}},
+            {'fn': get_functor,  'kw': {'as_tree': True}},
             {'fn': get_functor,  'kw': {}},
+            {'fn': get_functor,  'kw': {'as_tree': True}},
             {'fn': get_pfunctor, 'kw': {'as_is': True}},
             {'fn': get_pfunctor, 'kw': {}},
-            {'fn': get_pfunctor, 'kw': {}}
+            {'fn': get_pfunctor, 'kw': {'as_tree': True}},
+            {'fn': get_pfunctor, 'kw': {}},
+            {'fn': get_pfunctor, 'kw': {'as_tree': True}}
         ])
 
 

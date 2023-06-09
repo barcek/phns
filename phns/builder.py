@@ -31,9 +31,9 @@ def get_functor(value: Any, **kwargs) -> Union[Functor, FunctorIter, FunctorDict
     const = get_constructor(value)
     as_is = False if 'as_is' not in kwargs else kwargs['as_is']
     if not as_is and const in iterables_passed:
-        return FunctorIter(value, const)
+        return FunctorIter(value, const, **kwargs)
     if not as_is and const == dict:
-        return FunctorDict(value)
+        return FunctorDict(value, **kwargs)
     return Functor(value)
 
 def get_pfunctor(value: Any, **kwargs) -> Union[PFunctor, PFunctorIter, PFunctorDict]:
@@ -49,7 +49,7 @@ def get_pfunctor(value: Any, **kwargs) -> Union[PFunctor, PFunctorIter, PFunctor
     const = get_constructor(value)
     as_is = False if 'as_is' not in kwargs else kwargs['as_is']
     if not as_is and const in iterables_passed:
-        return PFunctorIter.of(value, const)
+        return PFunctorIter.of(value, const, **kwargs)
     if not as_is and const == dict:
-        return PFunctorDict.of(value)
+        return PFunctorDict.of(value, **kwargs)
     return PFunctor.of(value)

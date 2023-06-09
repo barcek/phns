@@ -86,7 +86,7 @@ value = {
 
 class TestFunctorBase(unittest.TestCase):
 
-    # instantiation / .value property
+    # instantiation / .value, .pairs properties
 
     def test_Functor(self):
 
@@ -98,10 +98,16 @@ class TestFunctorBase(unittest.TestCase):
         list_instantiated = FunctorIter(value['iter_list']['initial'])
         self.assertEqual(list_instantiated.value, value['iter_list']['initial'])
 
+        list_instantiated_tree = FunctorIter(value['iter_list']['initial'], as_tree=True)
+        self.assertEqual(list_instantiated_tree.pairs['as_tree'], True)
+
     def test_FunctorDict(self):
 
         dict_instantiated = FunctorDict(value['dict_dict']['initial'])
         self.assertEqual(dict_instantiated.value, value['dict_dict']['initial'])
+
+        dict_instantiated_tree = FunctorDict(value['dict_dict']['initial'], as_tree=True)
+        self.assertEqual(dict_instantiated_tree.pairs['as_tree'], True)
 
     # .map method
 
@@ -142,6 +148,9 @@ class TestFunctorBase(unittest.TestCase):
         list_list3ed_tree = FunctorIter(value['iter_list']['initial']).map(apply['list_3'], True)
         self.assertEqual(list_list3ed_tree, value['iter_list']['list3ed_tree'])
 
+        list_list3ed_tree = FunctorIter(value['iter_list']['initial'], as_tree=True).map(apply['list_3'])
+        self.assertEqual(list_list3ed_tree, value['iter_list']['list3ed_tree'])
+
         tuple_list3ed_tree = FunctorIter(value['iter_tuple']['initial']).map(apply['list_3'], True)
         self.assertEqual(tuple_list3ed_tree, value['iter_tuple']['list3ed_tree'])
 
@@ -159,10 +168,13 @@ class TestFunctorBase(unittest.TestCase):
         dict_list3ed_tree = FunctorDict(value['dict_dict']['initial']).map(apply['list_3'], True)
         self.assertEqual(dict_list3ed_tree, value['dict_dict']['list3ed_tree'])
 
+        dict_list3ed_tree = FunctorDict(value['dict_dict']['initial'], as_tree=True).map(apply['list_3'])
+        self.assertEqual(dict_list3ed_tree, value['dict_dict']['list3ed_tree'])
+
 
 class TestFunctorPointed(unittest.TestCase):
 
-    # instantiation / .value property
+    # instantiation / .value, .pairs properties
 
     def test_PFunctor(self):
 
@@ -174,10 +186,16 @@ class TestFunctorPointed(unittest.TestCase):
         list_instantiated = PFunctorIter(value['iter_list']['initial'])
         self.assertEqual(list_instantiated.value, value['iter_list']['initial'])
 
+        list_instantiated_tree = PFunctorIter(value['iter_list']['initial'], as_tree=True)
+        self.assertEqual(list_instantiated_tree.pairs['as_tree'], True)
+
     def test_PFunctorDict(self):
 
         dict_instantiated = PFunctorDict(value['dict_dict']['initial'])
         self.assertEqual(dict_instantiated.value, value['dict_dict']['initial'])
+
+        dict_instantiated_tree = PFunctorDict(value['dict_dict']['initial'], as_tree=True)
+        self.assertEqual(dict_instantiated_tree.pairs['as_tree'], True)
 
     # .of static method
 
@@ -197,10 +215,16 @@ class TestFunctorPointed(unittest.TestCase):
         list_lifted = PFunctorIter.of(value['iter_list']['initial'])
         self.assertEqual(list_lifted.value, value['iter_list']['initial'])
 
+        list_lifted_tree = PFunctorIter.of(value['iter_list']['initial'], as_tree=True)
+        self.assertEqual(list_lifted_tree.pairs['as_tree'], True)
+
     def test_PFunctorDict_of(self):
 
         dict_lifted = PFunctorIter.of(value['dict_dict']['initial'])
         self.assertEqual(dict_lifted.value, value['dict_dict']['initial'])
+
+        dict_lifted_tree = PFunctorIter.of(value['dict_dict']['initial'], as_tree=True)
+        self.assertEqual(dict_lifted_tree.pairs['as_tree'], True)
 
     # .map method
 
@@ -235,6 +259,9 @@ class TestFunctorPointed(unittest.TestCase):
         list_list3ed_tree = PFunctorIter.of(value['iter_list']['initial']).map(apply['list_3'], True)
         self.assertEqual(list_list3ed_tree.value, value['iter_list']['list3ed_tree'])
 
+        list_list3ed_tree = PFunctorIter.of(value['iter_list']['initial'], as_tree=True).map(apply['list_3'])
+        self.assertEqual(list_list3ed_tree.value, value['iter_list']['list3ed_tree'])
+
         tuple_list3ed_tree = PFunctorIter.of(value['iter_tuple']['initial']).map(apply['list_3'], True)
         self.assertEqual(tuple_list3ed_tree.value, value['iter_tuple']['list3ed_tree'])
 
@@ -248,6 +275,9 @@ class TestFunctorPointed(unittest.TestCase):
     def test_PFunctorDict_map_as_tree(self):
 
         dict_list3ed_tree = PFunctorDict.of(value['dict_dict']['initial']).map(apply['list_3'], True)
+        self.assertEqual(dict_list3ed_tree.value, value['dict_dict']['list3ed_tree'])
+
+        dict_list3ed_tree = PFunctorDict.of(value['dict_dict']['initial'], as_tree=True).map(apply['list_3'])
         self.assertEqual(dict_list3ed_tree.value, value['dict_dict']['list3ed_tree'])
 
 

@@ -59,12 +59,15 @@ class FunctorIter(Generic[V]):
     const (attribute) Any = None
       The constructor function corresponding to the value attribute type.
 
+    pairs (attribute) Dict[str, Any] = {}
+      A dictionary of keyword-passed settings in the form of key-value pairs.
+
     map (method) handle: H, as_tree: bool = False -> Any
       Returns the instance value property once 'handle' has been applied
       to the whole by default or to each node if 'as_tree' is True.
     """
 
-    def __init__(self, value: Iterable[V], const: Any = None) -> None:
+    def __init__(self, value: Iterable[V], const: Any = None, **kwargs) -> None:
         """
         Returns a FunctorIter instance with a value property set to 'value'
         and a const property set to 'const' or the constructor of 'value'.
@@ -75,6 +78,7 @@ class FunctorIter(Generic[V]):
         """
         self.value = value
         self.const = get_constructor(value) if const is None else const
+        self.pairs = kwargs
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """
@@ -85,7 +89,7 @@ class FunctorIter(Generic[V]):
         >>> print(f.map(lambda x: x + 1, True))
         [2, [3, 4]]
         """
-        if as_tree:
+        if ('as_tree' in self.pairs and self.pairs['as_tree']) or as_tree:
             return traverse_iter(handle, self.value, self.const)
         return self.const(map(handle, self.value))
 
@@ -96,12 +100,15 @@ class FunctorDict(Generic[V]):
     value (attribute) Dict[Any, V]
       A value of type dict provided for transformation via the map method.
 
+    pairs (attribute) Dict[str, Any] = {}
+      A dictionary of keyword-passed settings in the form of key-value pairs.
+
     map (method) handle: H, as_tree: bool = False -> Any
       Returns the instance value property once 'handle' has been applied
       to the whole by default or to each node if 'as_tree' is True.
     """
 
-    def __init__(self, value: Dict[Any, V]) -> None:
+    def __init__(self, value: Dict[Any, V], **kwargs) -> None:
         """
         Returns a FunctorDict instance with a value property set to 'value'.
 
@@ -110,6 +117,7 @@ class FunctorDict(Generic[V]):
         FunctorDict {'a': 1, 'b': {'c': 2, 'd': 3}}
         """
         self.value = value
+        self.pairs = kwargs
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """
@@ -120,7 +128,7 @@ class FunctorDict(Generic[V]):
         >>> print(f.map(lambda x: x + 1, True))
         {'a': 2, 'b': {'c': 3, 'd': 4}}
         """
-        if as_tree:
+        if ('as_tree' in self.pairs and self.pairs['as_tree']) or as_tree:
             return traverse_dict(handle, self.value)
         return {k: handle(v) for k, v in self.value.items()}
 
@@ -176,6 +184,9 @@ class PFunctorIter(FunctorIter):
     const (attribute) Any = None
       The constructor function corresponding to the value attribute type.
 
+    pairs (attribute) Dict[str, Any] = {}
+      A dictionary of keyword-passed settings in the form of key-value pairs.
+
     of (static method) value: Iterable[V], const: Any = None -> Any
       Returns a PFunctorIter instance with a value property set to 'value'
       and a const property set to 'const' or the constructor of 'value'.
@@ -187,7 +198,7 @@ class PFunctorIter(FunctorIter):
     """
 
     @classmethod
-    def of(cls, value: Iterable[V], const: Any = None) -> Any:
+    def of(cls, value: Iterable[V], const: Any = None, **kwargs) -> Any:
         """
         Returns a PFunctorIter instance with a value property set to 'value'
         and a const property set to 'const' or the constructor of 'value'.
@@ -197,7 +208,7 @@ class PFunctorIter(FunctorIter):
         PFunctorIter [1, [2, 3]] True
         """
         const = get_constructor(value) if const is None else const
-        return cls(value, const)
+        return cls(value, const, **kwargs)
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """
@@ -209,7 +220,7 @@ class PFunctorIter(FunctorIter):
         >>> print(pf.map(lambda x: x + 1, True).value)
         [2, [3, 4]]
         """
-        if as_tree:
+        if ('as_tree' in self.pairs and self.pairs['as_tree']) or as_tree:
             traversed = traverse_iter(handle, self.value, self.const)
             return self.__class__(traversed)
         mapped = self.const(map(handle, self.value))
@@ -223,6 +234,9 @@ class PFunctorDict(FunctorDict):
     value (attribute) Dict[Any, V]
       A value of type dict provided for transformation via the map method.
 
+    pairs (attribute) Dict[str, Any] = {}
+      A dictionary of keyword-passed settings in the form of key-value pairs.
+
     of (static method) value: Dict[Any, V] -> Any
       Returns a PFunctorDict instance with a value property set to 'value'.
 
@@ -233,7 +247,7 @@ class PFunctorDict(FunctorDict):
     """
 
     @classmethod
-    def of(cls, value: Dict[Any, V]) -> Any:
+    def of(cls, value: Dict[Any, V], **kwargs) -> Any:
         """
         Returns a PFunctorDict instance with a value property set to 'value'.
 
@@ -241,7 +255,7 @@ class PFunctorDict(FunctorDict):
         >>> print(pf.__class__.__name__, pf.value)
         PFunctorDict {'a': 1, 'b': {'c': 2, 'd': 3}}
         """
-        return cls(value)
+        return cls(value, **kwargs)
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """
@@ -253,7 +267,7 @@ class PFunctorDict(FunctorDict):
         >>> print(pf.map(lambda x: x + 1, True).value)
         {'a': 2, 'b': {'c': 3, 'd': 4}}
         """
-        if as_tree:
+        if ('as_tree' in self.pairs and self.pairs['as_tree']) or as_tree:
             traversed = traverse_dict(handle, self.value)
             return self.__class__(traversed)
         mapped = {k: handle(v) for k, v in self.value.items()}
