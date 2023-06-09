@@ -87,7 +87,25 @@ The corresponding `phnew` shorthands 'f:' and 'pf:' are equivalent to 'f' and 'p
 
 ##### Nested mapping
 
-If the internal value of an `-Iter` instance is a `list` or `tuple`, or in the case of a `-Dict` instance, the second argument to `.map` can be set to `True` to apply the function not only to the data structure's top-level values, but also to nested instances of the structure.
+In the case of either an `-Iter` instance containing a `list` or `tuple` or a `-Dict` instance, the mapping can be applied not only to the data structure's top-level values, but also to nested instances of the structure, by setting the `.map` method's second argument (`as_tree`) to `True`:
+
+```python
+FunctorIter([1, [2, 3]]).map(lambda x: x + 1, True)
+```
+
+An `-Iter` or `-Dict` instance also applies the function in this way if instantiated by whichever means with the `as_tree` keyword argument set to `True`:
+
+```python
+demo_fi_1 = get_functor([1, [2, 3]], as_tree=True)
+demo_fi_2 = FunctorIter([1, [2, 3]], as_tree=True)
+demo_pfi = PFunctorIter.of([1, [2, 3]], as_tree=True)
+```
+
+Alternatively, the appropriate `phnew` shorthand can be used, either 'f:{' or 'f{' for a base functor or 'pf:{' or 'pf{' for a pointed:
+
+```python
+demo_fi_3 = phnew('f:{', [1, 2, 3])
+```
 
 ##### Other iterables
 
