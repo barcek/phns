@@ -60,17 +60,18 @@ class FunctorIter(Generic[V]):
       The constructor function corresponding to the value attribute type.
 
     pairs (attribute) Dict[str, Any] = {}
-      A dictionary of keyword-passed settings in the form of key-value pairs.
+      A dictionary of keyword argument settings received at instantiation.
 
     map (method) handle: H, as_tree: bool = False -> Any
       Returns the instance value property once 'handle' has been applied
-      to the whole by default or to each node if 'as_tree' is True.
+      to the whole by default or to each node if any 'as_tree' is truthy.
     """
 
     def __init__(self, value: Iterable[V], const: Any = None, **kwargs) -> None:
         """
-        Returns a FunctorIter instance with a value property set to 'value'
-        and a const property set to 'const' or the constructor of 'value'.
+        Returns a FunctorIter instance with a value property set to 'value',
+        a const property set to 'const' or the constructor of 'value' and
+        a pairs property set to the dictionary of keyword arguments
 
         >>> f = FunctorIter([1, [2, 3]])
         >>> print(f.__class__.__name__, f.value, f.const == list)
@@ -83,7 +84,7 @@ class FunctorIter(Generic[V]):
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """
         Returns the instance value property once 'handle' has been applied
-        to the whole by default or to each node if 'as_tree' is True.
+        to the whole by default or to each node if any 'as_tree' is truthy.
 
         >>> f = FunctorIter([1, [2, 3]])
         >>> print(f.map(lambda x: x + 1, True))
@@ -101,16 +102,17 @@ class FunctorDict(Generic[V]):
       A value of type dict provided for transformation via the map method.
 
     pairs (attribute) Dict[str, Any] = {}
-      A dictionary of keyword-passed settings in the form of key-value pairs.
+      A dictionary of keyword argument settings received at instantiation.
 
     map (method) handle: H, as_tree: bool = False -> Any
       Returns the instance value property once 'handle' has been applied
-      to the whole by default or to each node if 'as_tree' is True.
+      to the whole by default or to each node if any 'as_tree' is truthy.
     """
 
     def __init__(self, value: Dict[Any, V], **kwargs) -> None:
         """
-        Returns a FunctorDict instance with a value property set to 'value'.
+        Returns a FunctorDict instance with a value property set to 'value'
+        and a pairs property set to the dictionary of keyword arguments
 
         >>> f = FunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
         >>> print(f.__class__.__name__, f.value)
@@ -122,7 +124,7 @@ class FunctorDict(Generic[V]):
     def map(self, handle: H, as_tree: bool = False) -> Any:
         """
         Returns the instance value property once 'handle' has been applied
-        to the whole by default or to each node if 'as_tree' is True.
+        to the whole by default or to each node if any 'as_tree' is truthy.
 
         >>> f = FunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
         >>> print(f.map(lambda x: x + 1, True))
@@ -143,7 +145,7 @@ class PFunctor(Functor):
     value (attribute) V
       A value of any type provided for transformation via the map method.
 
-    of (static method) value: V -> Any
+    of (class method) value: V -> Any
       Returns a PFunctor instance with a value property set to 'value'.
 
     map (method) handle: H -> Any
@@ -185,23 +187,24 @@ class PFunctorIter(FunctorIter):
       The constructor function corresponding to the value attribute type.
 
     pairs (attribute) Dict[str, Any] = {}
-      A dictionary of keyword-passed settings in the form of key-value pairs.
+      A dictionary of keyword argument settings received at instantiation.
 
-    of (static method) value: Iterable[V], const: Any = None -> Any
+    of (class method) value: Iterable[V], const: Any = None -> Any
       Returns a PFunctorIter instance with a value property set to 'value'
       and a const property set to 'const' or the constructor of 'value'.
 
     map (method) handle: H, as_tree: bool = False -> Any
       Returns a new PFunctorIter instance with a value property being the
       previous instance value property once 'handle' has been applied
-      to the whole by default or to each node if 'as_tree' is True.
+      to the whole by default or to each node if any 'as_tree' is truthy.
     """
 
     @classmethod
     def of(cls, value: Iterable[V], const: Any = None, **kwargs) -> Any:
         """
         Returns a PFunctorIter instance with a value property set to 'value'
-        and a const property set to 'const' or the constructor of 'value'.
+        a const property set to 'const' or the constructor of 'value' and
+        a pairs property set to the dictionary of keyword arguments
 
         >>> pf = PFunctorIter([1, [2, 3]])
         >>> print(pf.__class__.__name__, pf.value, pf.const == list)
@@ -214,7 +217,7 @@ class PFunctorIter(FunctorIter):
         """
         Returns a new PFunctorIter instance with a value property being the
         previous instance value property once 'handle' has been applied
-        to the whole by default or to each node if 'as_tree' is True.
+        to the whole by default or to each node if any 'as_tree' is truthy.
 
         >>> pf = PFunctorIter([1, [2, 3]])
         >>> print(pf.map(lambda x: x + 1, True).value)
@@ -235,21 +238,22 @@ class PFunctorDict(FunctorDict):
       A value of type dict provided for transformation via the map method.
 
     pairs (attribute) Dict[str, Any] = {}
-      A dictionary of keyword-passed settings in the form of key-value pairs.
+      A dictionary of keyword argument settings received at instantiation.
 
-    of (static method) value: Dict[Any, V] -> Any
+    of (class method) value: Dict[Any, V] -> Any
       Returns a PFunctorDict instance with a value property set to 'value'.
 
     map (method) handle: H, as_tree: bool = False -> Any
       Returns a new PFunctorDict instance with a value property being the
       previous instance value property once 'handle' has been applied
-      to the whole by default or to each node if 'as_tree' is True.
+      to the whole by default or to each node if any 'as_tree' is truthy.
     """
 
     @classmethod
     def of(cls, value: Dict[Any, V], **kwargs) -> Any:
         """
-        Returns a PFunctorDict instance with a value property set to 'value'.
+        Returns a PFunctorDict instance with a value property set to 'value'
+        and a pairs property set to the dictionary of keyword arguments
 
         >>> pf = PFunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
         >>> print(pf.__class__.__name__, pf.value)
@@ -261,7 +265,7 @@ class PFunctorDict(FunctorDict):
         """
         Returns a new PFunctorDict instance with a value property being the
         previous instance value property once 'handle' has been applied
-        to the whole by default or to each node if 'as_tree' is True.
+        to the whole by default or to each node if any 'as_tree' is truthy.
 
         >>> pf = PFunctorDict({'a': 1, 'b': {'c': 2, 'd': 3}})
         >>> print(pf.map(lambda x: x + 1, True).value)
