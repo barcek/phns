@@ -12,26 +12,20 @@ apply = {
 
 value = {
 
-    'list_nested':
+    'list_nested': {
+        'initial': [1, [2, 2, [3, 3, 3]]],
+        'doubled': [2, [4, 4, [6, 6, 6]]]
+    },
 
-        {
-            'initial': [1, [2, 2, [3, 3, 3]]],
-            'doubled': [2, [4, 4, [6, 6, 6]]]
-        },
+    'tuple_nested': {
+        'initial': (1, (2, 2, (3, 3, 3))),
+        'doubled': (2, (4, 4, (6, 6, 6)))
+    },
 
-    'tuple_nested':
-
-        {
-            'initial': (1, (2, 2, (3, 3, 3))),
-            'doubled': (2, (4, 4, (6, 6, 6)))
-        },
-
-    'dict_nested':
-
-        {
-            'initial': {'a': 1, 'b': {'c': 2, 'd': 2, 'e': {'f': 3, 'g': 3, 'h': 3}}},
-            'doubled': {'a': 2, 'b': {'c': 4, 'd': 4, 'e': {'f': 6, 'g': 6, 'h': 6}}}
-        }
+    'dict_nested': {
+        'initial': {'a': 1, 'b': {'c': 2, 'd': 2, 'e': {'f': 3, 'g': 3, 'h': 3}}},
+        'doubled': {'a': 2, 'b': {'c': 4, 'd': 4, 'e': {'f': 6, 'g': 6, 'h': 6}}}
+    }
 }
 
 

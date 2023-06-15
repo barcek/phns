@@ -14,71 +14,59 @@ apply = {
 
 value = {
 
-    'int':
+    'int': {
+        'initial':      1,
+        'list3ed':      [1, 1, 1]
+    },
 
-        {
-            'initial':      1,
-            'list3ed':      [1, 1, 1]
-        },
+    'list': {
+        'initial':      [1, [2, 3]],
+        'list3ed':      [[1, [2, 3]], [1, [2, 3]], [1, [2, 3]]]
+    },
 
-    'list':
+    'dict': {
+        'initial':      {'a': 1, 'b': {'c': 2, 'd': 3}},
+        'list3ed':      [{'a': 1, 'b': {'c': 2, 'd': 3}}, {'a': 1, 'b': {'c': 2, 'd': 3}}, {'a': 1, 'b': {'c': 2, 'd': 3}}]
+    },
 
-        {
-            'initial':      [1, [2, 3]],
-            'list3ed':      [[1, [2, 3]], [1, [2, 3]], [1, [2, 3]]]
-        },
+    'iter_list': {
 
-    'dict':
+        'initial':      [1, [2, 3]],
+        'list3ed':      [[1, 1, 1], [[2, 3], [2, 3], [2, 3]]],
+        'list3ed_tree': [[1, 1, 1], [[2, 2, 2], [3, 3, 3]]]
+    },
 
-        {
-            'initial':      {'a': 1, 'b': {'c': 2, 'd': 3}},
-            'list3ed':      [{'a': 1, 'b': {'c': 2, 'd': 3}}, {'a': 1, 'b': {'c': 2, 'd': 3}}, {'a': 1, 'b': {'c': 2, 'd': 3}}]
-        },
+    'iter_tuple': {
 
-    'iter_list':
+        'initial':      (1, (2, 3)),
+        'list3ed':      ([1, 1, 1], [(2, 3), (2, 3), (2, 3)]),
+        'list3ed_tree': ([1, 1, 1], ([2, 2, 2], [3, 3, 3]))
+    },
 
-        {
-            'initial':      [1, [2, 3]],
-            'list3ed':      [[1, 1, 1], [[2, 3], [2, 3], [2, 3]]],
-            'list3ed_tree': [[1, 1, 1], [[2, 2, 2], [3, 3, 3]]]
-        },
+    'iter_set': {
 
-    'iter_tuple':
+        'initial':      {1, 2},
+        'doubled':      {2, 4}
+    },
 
-        {
-            'initial':      (1, (2, 3)),
-            'list3ed':      ([1, 1, 1], [(2, 3), (2, 3), (2, 3)]),
-            'list3ed_tree': ([1, 1, 1], ([2, 2, 2], [3, 3, 3]))
-        },
+    'iter_frozenset': {
 
-    'iter_set':
+        'initial':      frozenset([1, 2]),
+        'doubled':      frozenset({2, 4})
+    },
 
-        {
-            'initial':      {1, 2},
-            'doubled':      {2, 4}
-        },
+    'iter_bytearray': {
 
-    'iter_frozenset':
+        'initial':      bytearray('test_value', encoding='utf-8'),
+        'asc32ed':      bytearray(b'          ')
+    },
 
-        {
-            'initial':      frozenset([1, 2]),
-            'doubled':      frozenset({2, 4})
-        },
+    'dict_dict': {
 
-    'iter_bytearray':
-
-        {
-            'initial':      bytearray('test_value', encoding='utf-8'),
-            'asc32ed':      bytearray(b'          ')
-        },
-
-    'dict_dict':
-
-        {
-            'initial':      {'a': 1, 'b': {'c': 2, 'd': 3}},
-            'list3ed':      {'a': [1, 1, 1], 'b': [{'c': 2, 'd': 3}, {'c': 2, 'd': 3}, {'c': 2, 'd': 3}]},
-            'list3ed_tree': {'a': [1, 1, 1], 'b': {'c': [2, 2, 2], 'd': [3, 3, 3]}}
-        }
+        'initial':      {'a': 1, 'b': {'c': 2, 'd': 3}},
+        'list3ed':      {'a': [1, 1, 1], 'b': [{'c': 2, 'd': 3}, {'c': 2, 'd': 3}, {'c': 2, 'd': 3}]},
+        'list3ed_tree': {'a': [1, 1, 1], 'b': {'c': [2, 2, 2], 'd': [3, 3, 3]}}
+    }
 }
 
 
@@ -197,7 +185,7 @@ class TestFunctorPointed(unittest.TestCase):
         dict_instantiated_tree = PFunctorDict(value['dict_dict']['initial'], as_tree=True)
         self.assertEqual(dict_instantiated_tree.pairs['as_tree'], True)
 
-    # .of static method
+    # .of class method
 
     def test_PFunctor_of(self):
 
