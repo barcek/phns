@@ -5,7 +5,7 @@ from phns.factory import *
 
 # test builders
 
-get_test_build = lambda value: f'Test build value: {value}'
+get_test_build = lambda value, **kwargs: f'Test build properties: {value}, {kwargs}'
 
 
 # test classes
@@ -21,41 +21,37 @@ class TestFactory(unittest.TestCase):
 
         # .register method
 
-        instance.register('test_builder', get_test_build)
-        self.assertEqual(instance.builders, {'test_builder': {'fn': get_test_build, 'kw': {}}})
+        instance.register('test_builder', get_test_build, {'is_test': True})
+        self.assertEqual(instance.builders, {'test_builder': {'fn': get_test_build, 'kw': {'is_test': True}}})
 
         # __call__ built-in method
 
         test_build = instance('test_builder', 'test_value')
-        self.assertEqual(test_build, 'Test build value: test_value')
+        self.assertEqual(test_build, "Test build properties: test_value, {'is_test': True}")
 
         # phnew
 
         self.assertEqual(phnew.__class__, Phnew)
-        self.assertEqual(list(phnew.builders.keys()), [
-            'f.',
-            'f:',
-            'f:{',
-            'f',
-            'f{',
-            'pf.',
-            'pf:',
-            'pf:{',
-            'pf',
-            'pf{'
-        ])
-        self.assertEqual(list(phnew.builders.values()), [
-            {'fn': get_functor,  'kw': {'as_is': True}},
-            {'fn': get_functor,  'kw': {}},
-            {'fn': get_functor,  'kw': {'as_tree': True}},
-            {'fn': get_functor,  'kw': {}},
-            {'fn': get_functor,  'kw': {'as_tree': True}},
-            {'fn': get_pfunctor, 'kw': {'as_is': True}},
-            {'fn': get_pfunctor, 'kw': {}},
-            {'fn': get_pfunctor, 'kw': {'as_tree': True}},
-            {'fn': get_pfunctor, 'kw': {}},
-            {'fn': get_pfunctor, 'kw': {'as_tree': True}}
-        ])
+
+        test_kw_f         = {'fn': get_functor, 'kw': {}}
+        test_kw_f_as_is   = {'fn': get_functor, 'kw': {'as_is': True}}
+        test_kw_f_as_tree = {'fn': get_functor, 'kw': {'as_tree': True}}
+
+        self.assertEqual(phnew.builders['f.'],  test_kw_f_as_is)
+        self.assertEqual(phnew.builders['f:'],  test_kw_f)
+        self.assertEqual(phnew.builders['f:{'], test_kw_f_as_tree)
+        self.assertEqual(phnew.builders['f'],   test_kw_f)
+        self.assertEqual(phnew.builders['f{'],  test_kw_f_as_tree)
+
+        test_kw_pf         = {'fn': get_pfunctor, 'kw': {}}
+        test_kw_pf_as_is   = {'fn': get_pfunctor, 'kw': {'as_is': True}}
+        test_kw_pf_as_tree = {'fn': get_pfunctor, 'kw': {'as_tree': True}}
+
+        self.assertEqual(phnew.builders['pf.'],  test_kw_pf_as_is)
+        self.assertEqual(phnew.builders['pf:'],  test_kw_pf)
+        self.assertEqual(phnew.builders['pf:{'], test_kw_pf_as_tree)
+        self.assertEqual(phnew.builders['pf'],   test_kw_pf)
+        self.assertEqual(phnew.builders['pf{'],  test_kw_pf_as_tree)
 
 
 if __name__ == '__main__':
