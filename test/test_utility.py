@@ -65,6 +65,14 @@ class TestUtility(unittest.TestCase):
         int_class_name = get_class_name(1)
         self.assertEqual(int_class_name, 'int')
 
+    def test_get_const(self):
+
+        int_const = get_const(1)
+        self.assertEqual(int_const, int)
+
+        str_const = get_const('abc')
+        self.assertEqual(str_const((['x', 'y', 'z'])), 'xyz')
+
 
 if __name__ == '__main__':
     unittest.main()

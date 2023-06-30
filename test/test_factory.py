@@ -34,21 +34,25 @@ class TestFactory(unittest.TestCase):
         self.assertEqual(phnew.__class__, Phnew)
 
         test_kw_f         = {'fn': get_functor, 'kw': {}}
-        test_kw_f_as_is   = {'fn': get_functor, 'kw': {'as_is': True}}
+        test_kw_f_as_is   = {'fn': get_functor, 'kw': {'as_base': True}}
+        test_kw_f_as_iter = {'fn': get_functor, 'kw': {'as_iter': True}}
         test_kw_f_as_tree = {'fn': get_functor, 'kw': {'as_tree': True}}
 
         self.assertEqual(phnew.builders['f.'],  test_kw_f_as_is)
         self.assertEqual(phnew.builders['f:'],  test_kw_f)
+        self.assertEqual(phnew.builders['f:.'], test_kw_f_as_iter)
         self.assertEqual(phnew.builders['f:{'], test_kw_f_as_tree)
         self.assertEqual(phnew.builders['f'],   test_kw_f)
         self.assertEqual(phnew.builders['f{'],  test_kw_f_as_tree)
 
         test_kw_pf         = {'fn': get_pfunctor, 'kw': {}}
-        test_kw_pf_as_is   = {'fn': get_pfunctor, 'kw': {'as_is': True}}
+        test_kw_pf_as_is   = {'fn': get_pfunctor, 'kw': {'as_base': True}}
+        test_kw_pf_as_iter = {'fn': get_pfunctor, 'kw': {'as_iter': True}}
         test_kw_pf_as_tree = {'fn': get_pfunctor, 'kw': {'as_tree': True}}
 
         self.assertEqual(phnew.builders['pf.'],  test_kw_pf_as_is)
         self.assertEqual(phnew.builders['pf:'],  test_kw_pf)
+        self.assertEqual(phnew.builders['pf:.'], test_kw_pf_as_iter)
         self.assertEqual(phnew.builders['pf:{'], test_kw_pf_as_tree)
         self.assertEqual(phnew.builders['pf'],   test_kw_pf)
         self.assertEqual(phnew.builders['pf{'],  test_kw_pf_as_tree)

@@ -7,7 +7,7 @@ Functor classes, available also via 'phns/builder.py' and 'phns/factory.py':
 
 from typing import TypeVar, Callable, Generic, Iterable, List, Dict, Any
 
-from phns.utility import traverse_iter, traverse_dict, get_constructor
+from phns.utility import traverse_iter, traverse_dict, get_const
 
 
 # types
@@ -78,7 +78,7 @@ class FunctorIter(Generic[V]):
         FunctorIter [1, [2, 3]] True
         """
         self.value = value
-        self.const = get_constructor(value) if const is None else const
+        self.const = get_const(value) if const is None else const
         self.pairs = kwargs
 
     def map(self, handle: H, as_tree: bool = False) -> Any:
@@ -210,7 +210,7 @@ class PFunctorIter(FunctorIter):
         >>> print(pf.__class__.__name__, pf.value, pf.const == list)
         PFunctorIter [1, [2, 3]] True
         """
-        const = get_constructor(value) if const is None else const
+        const = get_const(value) if const is None else const
         return cls(value, const, **kwargs)
 
     def map(self, handle: H, as_tree: bool = False) -> Any:

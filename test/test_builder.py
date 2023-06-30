@@ -21,6 +21,11 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(int_built.__class__, int_instantiated.__class__)
         self.assertEqual(int_built.value, value['int']['initial'])
 
+        str_built = get_functor(value['str']['initial'])
+        str_instantiated = Functor(value['str']['initial'])
+        self.assertEqual(str_built.__class__, str_instantiated.__class__)
+        self.assertEqual(str_built.value, value['str']['initial'])
+
         list_built = get_functor(value['list']['initial'], as_is=True)
         list_instantiated = Functor(value['list']['initial'])
         self.assertEqual(list_built.__class__, list_instantiated.__class__)
@@ -43,6 +48,12 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(list_built.__class__, list_instantiated.__class__)
         self.assertEqual(list_built.value, value['iter_list']['initial'])
         self.assertEqual(list_built.pairs['as_tree'], True)
+
+        str_built = get_functor(value['str']['initial'], as_iter=True)
+        str_instantiated = FunctorIter(value['str']['initial'])
+        self.assertEqual(str_built.__class__, str_instantiated.__class__)
+        self.assertEqual(str_built.value, value['str']['initial'])
+        self.assertEqual(str_built.pairs['as_iter'], True)
 
         tuple_built = get_functor(value['iter_tuple']['initial'])
         tuple_instantiated = FunctorIter(value['iter_tuple']['initial'])
@@ -86,6 +97,11 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(int_built.__class__, int_lifted.__class__)
         self.assertEqual(int_built.value, value['int']['initial'])
 
+        str_built = get_pfunctor(value['str']['initial'])
+        str_instantiated = PFunctor(value['str']['initial'])
+        self.assertEqual(str_built.__class__, str_instantiated.__class__)
+        self.assertEqual(str_built.value, value['str']['initial'])
+
         list_built = get_pfunctor(value['list']['initial'], as_is=True)
         list_lifted = PFunctor.of(value['list']['initial'])
         self.assertEqual(list_built.__class__, list_lifted.__class__)
@@ -108,6 +124,12 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(list_built.__class__, list_lifted.__class__)
         self.assertEqual(list_built.value, value['iter_list']['initial'])
         self.assertEqual(list_built.pairs['as_tree'], True)
+
+        str_built = get_pfunctor(value['str']['initial'], as_iter=True)
+        str_instantiated = PFunctorIter(value['str']['initial'])
+        self.assertEqual(str_built.__class__, str_instantiated.__class__)
+        self.assertEqual(str_built.value, value['str']['initial'])
+        self.assertEqual(str_built.pairs['as_iter'], True)
 
         tuple_built = get_pfunctor(value['iter_tuple']['initial'])
         tuple_lifted = PFunctorIter.of(value['iter_tuple']['initial'])

@@ -9,6 +9,7 @@ apply = {
 
     'list_3': lambda x: [x, x, x],
     'double': lambda x: x * 2,
+    'tab_l1': lambda x: f'\t{x}',
     'asc_32': lambda x: 32
 }
 
@@ -19,6 +20,11 @@ value = {
         'list3ed':      [1, 1, 1]
     },
 
+    'str': {
+        'initial':      'abc',
+        'tabl1ed':      '\tabc'
+    },
+
     'list': {
         'initial':      [1, [2, 3]],
         'list3ed':      [[1, [2, 3]], [1, [2, 3]], [1, [2, 3]]]
@@ -27,6 +33,12 @@ value = {
     'dict': {
         'initial':      {'a': 1, 'b': {'c': 2, 'd': 3}},
         'list3ed':      [{'a': 1, 'b': {'c': 2, 'd': 3}}, {'a': 1, 'b': {'c': 2, 'd': 3}}, {'a': 1, 'b': {'c': 2, 'd': 3}}]
+    },
+
+    'iter_str': {
+
+        'initial':      'abc',
+        'tabl1ed':      '\ta\tb\tc'
     },
 
     'iter_list': {
@@ -81,7 +93,13 @@ class TestFunctorBase(unittest.TestCase):
         int_instantiated = Functor(value['int']['initial'])
         self.assertEqual(int_instantiated.value, value['int']['initial'])
 
+        str_instantiated = Functor(value['str']['initial'])
+        self.assertEqual(str_instantiated.value, value['str']['initial'])
+
     def test_FunctorIter(self):
+
+        str_instantiated = FunctorIter(value['iter_str']['initial'])
+        self.assertEqual(str_instantiated.value, value['iter_str']['initial'])
 
         list_instantiated = FunctorIter(value['iter_list']['initial'])
         self.assertEqual(list_instantiated.value, value['iter_list']['initial'])
@@ -106,6 +124,9 @@ class TestFunctorBase(unittest.TestCase):
         int_list3ed = Functor(value['int']['initial']).map(apply['list_3'])
         self.assertEqual(int_list3ed, value['int']['list3ed'])
 
+        str_tabl1ed = Functor(value['str']['initial']).map(apply['tab_l1'])
+        self.assertEqual(str_tabl1ed, value['str']['tabl1ed'])
+
         list_list3ed = Functor(value['list']['initial']).map(apply['list_3'])
         self.assertEqual(list_list3ed, value['list']['list3ed'])
 
@@ -115,6 +136,9 @@ class TestFunctorBase(unittest.TestCase):
     # - on FunctorIter w/ list, tuple, set
 
     def test_FunctorIter_map(self):
+
+        str_tabl1ed = FunctorIter(value['iter_str']['initial']).map(apply['tab_l1'])
+        self.assertEqual(str_tabl1ed, value['iter_str']['tabl1ed'])
 
         list_list3ed = FunctorIter(value['iter_list']['initial']).map(apply['list_3'])
         self.assertEqual(list_list3ed, value['iter_list']['list3ed'])
@@ -169,7 +193,13 @@ class TestFunctorPointed(unittest.TestCase):
         int_instantiated = PFunctor(value['int']['initial'])
         self.assertEqual(int_instantiated.value, value['int']['initial'])
 
+        str_instantiated = PFunctor(value['str']['initial'])
+        self.assertEqual(str_instantiated.value, value['str']['initial'])
+
     def test_PFunctorList(self):
+
+        str_instantiated = PFunctorIter(value['iter_str']['initial'])
+        self.assertEqual(str_instantiated.value, value['iter_str']['initial'])
 
         list_instantiated = PFunctorIter(value['iter_list']['initial'])
         self.assertEqual(list_instantiated.value, value['iter_list']['initial'])
@@ -192,6 +222,9 @@ class TestFunctorPointed(unittest.TestCase):
         int_lifted = PFunctor.of(value['int']['initial'])
         self.assertEqual(int_lifted.value, value['int']['initial'])
 
+        str_lifted = PFunctor.of(value['str']['initial'])
+        self.assertEqual(str_lifted.value, value['str']['initial'])
+
         list_lifted = PFunctor.of(value['list']['initial'])
         self.assertEqual(list_lifted.value, value['list']['initial'])
 
@@ -199,6 +232,9 @@ class TestFunctorPointed(unittest.TestCase):
         self.assertEqual(dict_lifted.value, value['dict']['initial'])
 
     def test_PFunctorIter_of(self):
+
+        str_lifted = PFunctorIter.of(value['iter_str']['initial'])
+        self.assertEqual(str_lifted.value, value['iter_str']['initial'])
 
         list_lifted = PFunctorIter.of(value['iter_list']['initial'])
         self.assertEqual(list_lifted.value, value['iter_list']['initial'])
@@ -220,6 +256,9 @@ class TestFunctorPointed(unittest.TestCase):
 
     def test_PFunctor_map(self):
 
+        str_tabl1ed = PFunctor.of(value['str']['initial']).map(apply['tab_l1'])
+        self.assertEqual(str_tabl1ed.value, value['str']['tabl1ed'])
+
         int_list3ed = PFunctor.of(value['int']['initial']).map(apply['list_3'])
         self.assertEqual(int_list3ed.value, value['int']['list3ed'])
 
@@ -232,6 +271,9 @@ class TestFunctorPointed(unittest.TestCase):
     # - on PFunctorIter w/ list, tuple, set
 
     def test_PFunctorIter_map(self):
+
+        str_tabl1ed = PFunctorIter.of(value['iter_str']['initial']).map(apply['tab_l1'])
+        self.assertEqual(str_tabl1ed.value, value['iter_str']['tabl1ed'])
 
         list_list3ed = PFunctorIter.of(value['iter_list']['initial']).map(apply['list_3'])
         self.assertEqual(list_list3ed.value, value['iter_list']['list3ed'])

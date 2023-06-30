@@ -68,3 +68,13 @@ def get_class_name(object: Any) -> str:
     'int'
     """
     return str(get_constructor(object).__name__)
+
+def get_const(object: Any) -> Any:
+    """
+    Returns the class of which 'object' is an instance or a joining function if a string.
+
+    >>> get_const('abc')(['x', 'y', 'z'])
+    'xyz'
+    """
+    return get_constructor(object) if not isinstance(object, str)\
+        else lambda item: ''.join(item)

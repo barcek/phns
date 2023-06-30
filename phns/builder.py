@@ -29,10 +29,12 @@ def get_functor(value: Any, **kwargs) -> Union[Functor, FunctorIter, FunctorDict
     FunctorIter [1, 2, 3] True
     """
     const = get_constructor(value)
-    as_is = False if 'as_is' not in kwargs else kwargs['as_is']
-    if not as_is and const in iterables_passed:
+    as_base = False if ('as_base' not in kwargs and 'as_is' not in kwargs)\
+        else ('as_base' in kwargs and kwargs['as_base']) or kwargs['as_is']
+    as_iter = False if 'as_iter' not in kwargs else kwargs['as_iter']
+    if (not as_base and const in iterables_passed) or as_iter:
         return FunctorIter(value, const, **kwargs)
-    if not as_is and const == dict:
+    if not as_base and const == dict:
         return FunctorDict(value, **kwargs)
     return Functor(value)
 
@@ -47,9 +49,11 @@ def get_pfunctor(value: Any, **kwargs) -> Union[PFunctor, PFunctorIter, PFunctor
     PFunctorIter [1, 2, 3] True
     """
     const = get_constructor(value)
-    as_is = False if 'as_is' not in kwargs else kwargs['as_is']
-    if not as_is and const in iterables_passed:
+    as_base = False if ('as_base' not in kwargs and 'as_is' not in kwargs)\
+        else ('as_base' in kwargs and kwargs['as_base']) or kwargs['as_is']
+    as_iter = False if 'as_iter' not in kwargs else kwargs['as_iter']
+    if (not as_base and const in iterables_passed) or as_iter:
         return PFunctorIter.of(value, const, **kwargs)
-    if not as_is and const == dict:
+    if not as_base and const == dict:
         return PFunctorDict.of(value, **kwargs)
     return PFunctor.of(value)
