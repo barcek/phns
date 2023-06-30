@@ -50,7 +50,7 @@ demo_f = get_functor(1)
 
 A class can also be imported from `phns.functor` and instantiated directly, whether the base `Functor`, `FunctorIter` or `FunctorDict`, or the pointed `PFunctor`, `PFunctorIter` or `PFunctorDict`.
 
-Note that by default a list, tuple, set, frozenset or bytearray passed to the `phnew` factory instance or to a builder is added to an instance of the `-Iter` class, and a dictionary to an instance of the `-Dict` class. For more on these classes and overriding this behaviour, see [Containers](#containers) below.
+Note that by default a list, tuple, set, frozenset or bytearray passed to the `phnew` factory instance or to a builder is added to an instance of the `-Iter` class, and a dictionary to an instance of the `-Dict` class. For more on these classes and overriding this behaviour, see [Containers](#containers) below. For use with strings, see [Other iterables](#other-iterables).
 
 For alternatives to `f` and `pf`, see [Shorthands](#shorthands) below.
 
@@ -81,14 +81,16 @@ from phns import phnew
 demo_f = phnew('f.', 1)
 ```
 
-Alternatively, the given builder can have its `as_is` keyword argument set to `True`:
+Alternatively, the given builder can have its `as_base` keyword argument set to `True`:
 
 ```python
 from phns.builder import get_functor
-demo_f = get_functor(1, as_is=True)
+demo_f = get_functor(1, as_base=True)
 ```
 
-The corresponding `phnew` shorthands `f:` and `pf:` are equivalent to `f` and `pf`, providing the default behaviour. See also [Shorthands](#shorthands) below.
+The complementary `phnew` shorthands `f:` and `pf:` are equivalent to `f` and `pf`, providing the default behaviour. See also [Shorthands](#shorthands) below.
+
+For use of the factory instance and builders with strings, see [Other iterables](#other-iterables) below.
 
 ##### Nested mapping
 
@@ -116,7 +118,15 @@ See also [Shorthands](#shorthands) below.
 
 ##### Other iterables
 
-Note that the builders pass to the `-Iter` classes only lists, tuples, sets, frozensets and bytearrays as the testing covers these types. For other iterables, instantiate direct, modifying if need be, or add the new type to the reference list in 'phns/builder.py'. Pull requests are welcome.
+Note that the builders pass to the `-Iter` classes only lists, tuples, sets, frozensets and bytearrays.
+
+For strings, to allow individual character mapping, it is possible to:
+
+- instantiate an `-Iter` class directly
+- set the `as_iter` keyword argument of the builder to `True`
+- use the corresponding `phnew` shorthand, either `f:.` or `pf:.`
+
+For other iterables, the above may also be possible, along with adding the new type to the reference list in 'phns/builder.py', in each case potentially with modifications. Pull requests are welcome.
 
 #### Shorthands
 
@@ -133,6 +143,7 @@ Note that the builders pass to the `-Iter` classes only lists, tuples, sets, fro
   - a `Functor` otherwise
 
 - `f.` builds irrespective of value type, producing a `Functor`
+- `f:.` builds irrespective of value type, producing a `FunctorIter`
 
 ##### Pointed functors
 
@@ -147,6 +158,7 @@ Note that the builders pass to the `-Iter` classes only lists, tuples, sets, fro
   - a `PFunctor` otherwise
 
 - `pf.` builds irrespective of value type, producing a `PFunctor`
+- `pf:.` builds irrespective of value type, producing a `PFunctorIter`
 
 ### Primary functions
 
