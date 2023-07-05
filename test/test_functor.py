@@ -196,7 +196,7 @@ class TestFunctorPointed(unittest.TestCase):
         str_instantiated = PFunctor(value['str']['initial'])
         self.assertEqual(str_instantiated.value, value['str']['initial'])
 
-    def test_PFunctorList(self):
+    def test_PFunctorIter(self):
 
         str_instantiated = PFunctorIter(value['iter_str']['initial'])
         self.assertEqual(str_instantiated.value, value['iter_str']['initial'])
