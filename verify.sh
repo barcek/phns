@@ -5,7 +5,7 @@ introduce() {
 }
 
 introduce "static type check (via Mypy external library)"
-mypy phns/
+mypy phns/ verify.py
 
 introduce "docstring interactive examples (via standard library doctest module)"
 python3 -m doctest phns/*.py
